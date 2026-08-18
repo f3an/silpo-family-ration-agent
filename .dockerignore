@@ -1,0 +1,14 @@
+node_modules
+dist
+coverage
+.git
+.github
+.husky
+.vscode
+.env
+.env.example
+.silpo-tokens.json
+*.log
+.DS_Store
+test
+README.md

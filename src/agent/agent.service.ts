@@ -19,7 +19,7 @@ export class AgentService {
 
   async sendMessage(sessionId: string, message: string): Promise<string> {
     const history = this.histories.get(sessionId) ?? [];
-    const mcp = this.mcpService.getClient();
+    const mcp = await this.mcpService.getClient();
     const anthropic = this.anthropicService.getClient();
 
     const result = await runAgentTurn(anthropic, mcp, history, message);
