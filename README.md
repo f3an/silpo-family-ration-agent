@@ -38,11 +38,13 @@ Agentic AI that plans a family's weekly meals and builds the cart via Silpo's of
 
 ```bash
 npm install
-cp .env.example .env   # додай ANTHROPIC_API_KEY
+cp .env.example .env
 npm run dev              # nest start --watch, HTTP API на :3000
 ```
 
 При першому запуску відкриється браузер для авторизації в Сільпо (`auth.silpo.ua`); токени кешуються в `.silpo-tokens.json`, тож повторна авторизація не потрібна.
+
+**Claude-автентифікація:** `ANTHROPIC_API_KEY` у `.env` — опційний для локальної розробки. Якщо не задати, `AnthropicService` сам фолбекає на локальний credential chain SDK — наприклад профіль підписки з `ant auth login` (перевірити що активно: `ant auth status`). Для CI/продакшену — задай `ANTHROPIC_API_KEY` явно.
 
 **HTTP API:**
 
