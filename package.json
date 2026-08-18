@@ -1,6 +1,6 @@
 {
   "name": "silpo-family-ration-agent",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Agentic AI that plans a family's weekly meals and builds the cart via Silpo's official MCP server — built for Silpo AI Factory Hackathon.",
   "main": "dist/main.js",
   "private": true,
