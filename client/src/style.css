@@ -1,0 +1,1851 @@
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --border: #e3e2de;
+  --text: #1f1e1c;
+  --text-muted: #6b6a66;
+  --accent: #b5482e;
+  --accent-text: #ffffff;
+  --chip-bg: #eef0ec;
+  --chip-bg-checked: #b5482e;
+  --error: #b3261e;
+}
+
+/* System theme (no explicit choice saved yet) follows the OS preference. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #171614;
+    --surface: #211f1c;
+    --border: #37342f;
+    --text: #ece9e4;
+    --text-muted: #9a968e;
+    --accent: #e2734f;
+    --accent-text: #ffffff;
+    --chip-bg: #2b2925;
+    --chip-bg-checked: #e2734f;
+    --error: #ff8a80;
+  }
+}
+
+/* Explicit "Темна" choice wins regardless of OS preference. */
+:root[data-theme='dark'] {
+  --bg: #171614;
+  --surface: #211f1c;
+  --border: #37342f;
+  --text: #ece9e4;
+  --text-muted: #9a968e;
+  --accent: #e2734f;
+  --accent-text: #ffffff;
+  --chip-bg: #2b2925;
+  --chip-bg-checked: #e2734f;
+  --error: #ff8a80;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* React mounts everything into #root, so the height:100% that used to just
+ * work on body's direct children has to be re-established here instead. */
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ghost-btn {
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.ghost-btn:hover {
+  background: var(--chip-bg);
+}
+
+/* ---- Profile menu (dropdown from the initials badge) ---- */
+
+.profile-menu-wrapper {
+  position: relative;
+}
+
+.profile-badge {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.profile-badge:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+}
+
+.profile-badge:active {
+  transform: scale(0.92);
+}
+
+.profile-badge:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.profile-badge.open {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 20%, var(--chip-bg));
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.15);
+}
+
+.profile-menu-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px 4px;
+}
+
+.profile-menu-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.profile-menu-phone {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.profile-menu-bonus {
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 3px 8px 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.profile-menu-bonus:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent) 14%, var(--chip-bg));
+}
+
+.bonus-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 65%, #000));
+  color: var(--accent-text);
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+}
+
+.profile-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: var(--chip-bg);
+}
+
+.profile-menu-item.danger {
+  color: var(--error);
+}
+
+.profile-menu-label {
+  padding: 6px 10px 2px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.profile-menu-divider {
+  height: 1px;
+  margin: 4px 2px;
+  background: var(--border);
+  border: none;
+}
+
+.theme-switch {
+  display: flex;
+  gap: 4px;
+  padding: 0 6px 4px;
+}
+
+.theme-switch-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.theme-switch-option.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--chip-bg));
+}
+
+/* Base rule is only ever used by LoginPage now (RootLayout always adds
+ * .app-chat, which overrides display below) — centers .auth-gate both
+ * ways in the viewport instead of leaving it pinned to the top. */
+#app {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px 40px;
+  max-width: 880px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chat is the one view that wants to fill the whole viewport edge-to-edge
+ * (sidenav + panel), not sit as a centered/padded card like auth-gate does
+ * (which keeps the base #app rule above, via #app's own max-width) — so
+ * this override only ever applies alongside .chat-layout. Modals (profile,
+ * plan form) are dialogs positioned independently of #app entirely. */
+#app.app-chat {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* ---- Silpo auth ---- */
+
+/* Blocks the whole app until the guest logs in — same card treatment as
+ * the modals so it doesn't look like a lesser screen. */
+.auth-gate {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.auth-gate:not([hidden]) {
+  display: flex;
+}
+
+.auth-gate h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.auth-gate .primary-btn {
+  align-self: center;
+  margin-top: 8px;
+}
+
+/* ---- Shared step/form primitives (PlanForm, ProfileModal) ---- */
+
+.step-icon {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.step-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.stepper-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 8px;
+}
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.stepper-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.checkbox-field input {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.stepper-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.stepper-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-btn:hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--chip-bg));
+}
+
+.stepper-value {
+  font-size: 22px;
+  font-weight: 600;
+  min-width: 28px;
+}
+
+.option-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  min-width: 92px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.option-emoji {
+  font-size: 26px;
+}
+
+.option-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+}
+
+.option-card.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--chip-bg));
+}
+
+.style-grid {
+  align-items: stretch;
+}
+
+.style-card {
+  min-width: 160px;
+  max-width: 200px;
+  padding: 18px 16px;
+  gap: 8px;
+}
+
+.style-card .option-emoji {
+  font-size: 30px;
+}
+
+.option-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.option-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.text-field {
+  margin-top: 8px;
+  width: 100%;
+  max-width: 340px;
+  font-size: 14px;
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: inherit;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pill-option {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pill-option:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+}
+
+.pill-option.selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 18%, var(--chip-bg));
+}
+
+.budget-input {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.budget-input input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.budget-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ---- Plan form (quick "Скласти раціон" modal) ---- */
+
+.plan-form-modal {
+  /* Matches the browser's own `dialog:not([open]) { display: none }` —
+     an unconditional `display: flex` here would override that UA rule
+     (author styles always beat UA styles) and leave the dialog visible,
+     inline in the page flow, even before showModal() is ever called. */
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: min(560px, calc(100vw - 40px));
+  max-height: min(85vh, 800px);
+  overflow-y: auto;
+  margin: auto; /* combined with position:fixed + inset:0, centers the box */
+  padding: 32px 24px 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.plan-form-modal[open] {
+  display: flex;
+}
+
+.plan-form-modal::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.plan-form-modal h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--chip-bg));
+}
+
+/* ---- My-profile modal (account-level preferences) ---- */
+
+.profile-modal {
+  /* Matches the browser's own `dialog:not([open]) { display: none }` —
+     an unconditional `display: flex` here would override that UA rule
+     (author styles always beat UA styles) and leave the dialog visible,
+     inline in the page flow, even before showModal() is ever called. */
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: min(560px, calc(100vw - 40px));
+  max-height: min(85vh, 800px);
+  overflow-y: auto;
+  margin: auto; /* combined with position:fixed + inset:0, centers the box */
+  padding: 32px 24px 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.profile-modal[open] {
+  display: flex;
+}
+
+.profile-modal::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.profile-modal h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.profile-readonly {
+  gap: 6px;
+}
+
+.profile-subheading {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.profile-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.notes-textarea {
+  width: 100%;
+  max-width: 420px;
+  font-size: 14px;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: inherit;
+  resize: vertical;
+}
+
+.review-summary {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.review-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--chip-bg);
+  font-size: 14px;
+}
+
+.review-emoji {
+  font-size: 18px;
+}
+
+.review-row-button {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.review-row-button:hover {
+  background: color-mix(in srgb, var(--accent) 14%, var(--chip-bg));
+}
+
+/* ---- Family modal (member list) ---- */
+
+.family-member-list {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.family-member-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--chip-bg);
+  text-align: left;
+}
+
+.family-member-avatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.family-member-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.family-member-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.family-member-phone {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.family-member-you-badge {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 18%, var(--chip-bg));
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.family-modal-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.family-modal-cta:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent) 14%, var(--chip-bg));
+}
+
+/* ---- Delivery modal (timeslot/address picker) ---- */
+
+.delivery-actions {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.delivery-slot-list,
+.delivery-address-list {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.delivery-slot-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.delivery-slot-btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent) 14%, var(--chip-bg));
+}
+
+.delivery-slot-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.primary-btn {
+  align-self: flex-start;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---- Results / dish cards ---- */
+
+.dish-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* ---- Ingredient-swap option cards (propose_ingredient_options) ---- */
+
+.option-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.option-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.option-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.option-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  background: var(--chip-bg);
+}
+
+.option-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+}
+
+.option-card-title {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.option-card-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  max-height: 4.5em;
+  overflow-y: auto;
+}
+
+.option-card-footer {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.option-card-price {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.option-card-qty {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.option-card-pick {
+  margin-top: 8px;
+  align-self: stretch;
+  text-align: center;
+}
+
+.option-keep-original {
+  margin-top: 12px;
+  align-self: flex-start;
+}
+
+.dish-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dish-card-stale {
+  opacity: 0.55;
+}
+
+.dish-stale-badge {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.dish-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.dish-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.dish-select {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dish-select input {
+  accent-color: var(--accent);
+}
+
+.dish-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--text-muted);
+}
+
+.macros {
+  display: flex;
+  gap: 14px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.macro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.macro-value {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.macro-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.dish-description {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.ingredient-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ingredient-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ingredient-thumb {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.ingredient-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background: var(--chip-bg);
+}
+
+.ingredient-unmatched {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.ingredient-checkbox-slot {
+  width: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ingredient-checkbox {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.ingredient-excluded {
+  opacity: 0.5;
+}
+
+.ingredient-excluded .ingredient-text {
+  text-decoration: line-through;
+}
+
+.ingredient-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.ingredient-swap-btn {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ingredient-swap-btn:hover {
+  background: var(--chip-bg);
+  color: var(--accent);
+}
+
+.ingredient-swap-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Unlike the plain swap button (a nice-to-have on an already-matched
+ * ingredient), this one is the only way to resolve an ingredient the lean
+ * pipeline left with no real product at all — worth standing out instead
+ * of blending into the row like a passive icon. */
+.ingredient-swap-btn-missing {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.ingredient-swap-btn-missing:hover {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.checkout-bar {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+
+.selection-summary {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---- Toast (status messages: login/save/checkout confirmations & errors) ---- */
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 50;
+  max-width: min(420px, calc(100vw - 40px));
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  animation: toast-in 0.2s ease;
+}
+
+.toast-error {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Chat mode ---- */
+
+.chat-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.chat-sidenav {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.chat-sidenav.collapsed {
+  width: auto;
+  align-items: center;
+  padding: 14px 10px;
+}
+
+.sidenav-collapsed-spacer {
+  flex: 1;
+}
+
+.sidenav-collapsed-profile {
+  flex-shrink: 0;
+}
+
+.sidenav-collapsed-profile .profile-menu {
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: calc(100% + 8px);
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sidenav-header-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidenav-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.sidenav-icon-btn {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.sidenav-icon-btn-new {
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.sidenav-icon-btn:hover {
+  background: var(--chip-bg);
+  color: var(--text);
+}
+
+.sidenav-icon-btn.active {
+  background: var(--chip-bg);
+  color: var(--accent);
+}
+
+/* ---- Floating chat-search modal (opened from the sidenav's search icon) ---- */
+
+.search-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: min(480px, calc(100vw - 40px));
+  max-height: min(70vh, 560px);
+  margin: 80px auto auto;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.search-modal[open] {
+  display: flex;
+}
+
+.search-modal::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+.search-modal-input {
+  width: 100%;
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--chip-bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.search-modal-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-modal-list {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.search-modal-item {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.search-modal-item:hover {
+  background: var(--chip-bg);
+}
+
+.sidenav-footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.sidenav-account-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidenav-account-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sidenav-account-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidenav-account-phone {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidenav-account-bonus {
+  /* Anchored to the whole row (which stretches full sidenav width), not
+     the small avatar — the avatar sits flush against the sidenav's left
+     edge and the row's phone line, so a badge this wide has no clean spot
+     to float there without clipping or overlapping text. */
+  position: absolute;
+  bottom: -10px;
+  right: -4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+  font-size: 11px;
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.sidenav-account-bonus:active {
+  transform: scale(0.95);
+}
+
+.sidenav-account-bonus:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  background: color-mix(in srgb, var(--accent) 14%, var(--chip-bg));
+}
+
+/* The trigger sits at the bottom-left of a narrow sidenav, not the
+ * top-right of a full-width bar — the dropdown has to open upward (else it
+ * runs off the bottom of the viewport) and left-aligned to the badge (the
+ * default right-aligned positioning would push it off the left edge of a
+ * 260px-wide sidenav). */
+.sidenav-account-row .profile-menu {
+  top: auto;
+  right: auto;
+  bottom: calc(100% + 8px);
+  left: 0;
+}
+
+.chat-new-btn {
+  width: 100%;
+  align-self: stretch;
+  text-align: center;
+}
+
+/* Wraps personal + (optional) family sections as the ONE scrollable middle
+ * region between the header and the pinned footer — chat-history-list
+ * itself is no longer independently flex/scroll, since there can now be
+ * two of them (see ChatSidenav.jsx). */
+.sidenav-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidenav-section-title {
+  margin: 4px 4px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.chat-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat-history-empty {
+  margin: 8px 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.chat-history-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 8px;
+}
+
+.chat-history-item:hover,
+.chat-history-item.active {
+  background: var(--chip-bg);
+}
+
+.chat-history-item-pending {
+  opacity: 0.6;
+}
+
+.chat-history-item-pending .chat-history-title {
+  padding: 8px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.chat-history-item.active .chat-history-title {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.chat-history-title {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.chat-history-delete {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-history-delete:hover {
+  background: var(--border);
+  color: var(--error);
+}
+
+.chat-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.chat-empty {
+  margin: auto;
+  max-width: 320px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.chat-bubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--accent) 18%, var(--chip-bg));
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble-assistant {
+  align-self: flex-start;
+  background: var(--chip-bg);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-pending {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.chat-retry-btn {
+  align-self: flex-start;
+  font-size: 12px;
+}
+
+/* A dish-plan card is a full-width widget, not a chat bubble — sits as its
+ * own flex child inside .chat-messages, right after the assistant's short
+ * summary bubble. .checkout-bar's page-level `position: sticky` doesn't fit
+ * one-of-several-per-thread, so it's turned off here. */
+.chat-widget {
+  align-self: stretch;
+  width: 100%;
+}
+
+.chat-widget .checkout-bar {
+  position: static;
+}
+
+/* ---- Chat composer: the pill-shaped input, both docked at the bottom of
+   an open thread and (larger) centered on the empty-conversation landing ---- */
+
+.chat-input-row {
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.chat-composer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--chip-bg);
+}
+
+.chat-composer-large {
+  padding: 10px;
+}
+
+.chat-composer-plus {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-composer-plus:hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+}
+
+/* Spans the exact width of the composer pill (left:0/right:0, no fixed
+ * width) rather than a narrower fixed-width dropdown. */
+.chat-composer-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+}
+
+.chat-composer-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-composer-menu-item:hover {
+  background: var(--chip-bg);
+}
+
+.chat-composer-menu-item.disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.chat-composer-menu-item.disabled:hover {
+  background: transparent;
+}
+
+.chat-composer-menu-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.chat-composer-menu-hint-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chat-composer-menu-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.chat-composer-menu-empty {
+  margin: 4px 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.chat-composer-menu-search {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+}
+
+.chat-composer-menu-search:focus {
+  outline: none;
+}
+
+.chat-composer-menu-search::placeholder {
+  color: var(--text-muted);
+}
+
+.chat-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  color: var(--text);
+  padding: 8px 6px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+}
+
+.chat-input:focus {
+  outline: none;
+}
+
+.chat-composer-large .chat-input {
+  font-size: 15px;
+  padding: 10px 6px;
+}
+
+.chat-composer .primary-btn {
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
+/* ---- Chat landing: empty state of a fresh (no conversationId) thread ---- */
+
+.chat-landing {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+}
+
+.chat-landing-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-landing-brand {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+.chat-landing-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.chat-landing-body {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.chat-landing-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat-landing-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chat-landing-shortcut:hover {
+  background: var(--chip-bg);
+}
+
+.chat-landing-shortcut-icon {
+  font-size: 18px;
+}
+
+.chat-landing-shortcut-title {
+  display: block;
+  font-weight: 600;
+}
+
+.chat-landing-shortcut-desc {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Silpo AI-Agent</title>
+    <script>
+      // Applied before paint so an explicit "Темна"/"Світла" choice doesn't
+      // flash the wrong theme for a frame while React mounts.
+      (function () {
+        var theme = localStorage.getItem('silpo-agent-theme');
+        if (theme === 'dark' || theme === 'light') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

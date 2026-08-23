@@ -3,6 +3,7 @@ dist/
 coverage/
 .env
 .silpo-tokens.json
+.silpo-web-client.json
 *.log
 .DS_Store
 .vscode/
