@@ -2,6 +2,11 @@
 
 Agentic AI that plans a family's weekly meals and builds the cart via Silpo's official MCP server — built for «Сільпо» AI Factory: Хакатон ідей.
 
+## Документація
+
+- **[`docs/OVERVIEW.md`](docs/OVERVIEW.md)** — огляд проєкту зі скріншотами: що робить агент, архітектура, знайдені живим тестуванням edge-кейси.
+- **[`docs/PRESENTATION.md`](docs/PRESENTATION.md)** — текст для усної презентації, під критерії журі хакатону.
+
 ## Структура репозиторію
 
 - **[`api/`](api/README.md)** — NestJS-бекенд: агентний tool-use цикл (Claude Sonnet 5 + офіційний Silpo MCP), HTTP API. Web-логін у власний акаунт Сільпо, картковий flow (`/agent/plan` → `/agent/checkout`), особистий кабінет (`/agent/profile`, преференції в Postgres), чат-флоу (`/agent/messages`). Уся логіка, edge-кейси й тести — там.
