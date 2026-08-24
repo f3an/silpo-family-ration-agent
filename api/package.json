@@ -26,6 +26,10 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "overrides": {
+    "@emnapi/core": "1.10.0",
+    "@emnapi/runtime": "1.10.0"
+  },
   "bugs": {
     "url": "https://github.com/f3an/silpo-family-ration-agent/issues"
   },
